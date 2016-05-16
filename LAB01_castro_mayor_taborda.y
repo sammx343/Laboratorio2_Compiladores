@@ -3,6 +3,7 @@ void yyerror (char *s);
 
 #include <stdio.h>     /* C declarations used in actions */
 #include <stdlib.h>
+#include <string.h>
 #include "y.tab.h"
 
 int symbols[52];
@@ -10,7 +11,7 @@ int symbolVal(char symbol);
 
 extern int yylineno;
 extern char* yytext;
-
+FILE *archivo;
 void updateSymbolVal(char symbol, int val);
 %}
 
@@ -74,7 +75,7 @@ line    : assignment PUNTOYCOMA
 		| while
 		| do_while
 		| switch
-		| error
+		| error 
         ;
 
 
@@ -166,9 +167,6 @@ cases	: CASO term DOS_PUNTOS body BREAK PUNTOYCOMA cases
 /* //////////////////////////////////// ESTRUCTURA DE VARIABLES Y DECLARACIONES*/
 
 
-
-
-
 /* Suma de terminos individuales
 */
 
@@ -198,12 +196,7 @@ numerico : NUMERO
 		 | ID
 		 ;
 
-
-
-
 /* ////////////////////////////// OPERADORES DE COMPARACION, MATEMATICOS, ETC */
-
-
 
 
 /* Operadores de comparacion: < , <= , !=, == */
@@ -251,17 +244,17 @@ op_larga  : numerico op_mat numerico
 		  ;
 %%          
 
-
-
-
-
 /* C code */
 
 
-
-
 int main (void) {
+    archivo = fopen("LAB01_castro_mayor_taborda.txt", "w");
 	return yyparse ( );
+    fclose(archivo);
 }
 
-void yyerror (char *s) {fprintf (stderr, "Error linea %d: %s\n", yylineno, s);} 
+void yyerror (char *s) {
+ fprintf (stderr, "Error linea %d: %s\n", yylineno, s);
+ noerror=1;
+ fprintf (archivo, "Error linea %d: %s\n", yylineno, s);
+} 
