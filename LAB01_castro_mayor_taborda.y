@@ -255,6 +255,5 @@ int main (void) {
 
 void yyerror (char *s) {
  fprintf (stderr, "Error linea %d: %s\n", yylineno, s);
- noerror=1;
  fprintf (archivo, "Error linea %d: %s\n", yylineno, s);
 } 
