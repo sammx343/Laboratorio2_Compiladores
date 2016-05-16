@@ -57,8 +57,6 @@ header	: INCLUDE MENOR ID PUNTO ID MAYOR
 
 body	: line
 		| line body 
-		| error body
-		| error line body
 		|
 		;
 
@@ -76,6 +74,7 @@ line    : assignment PUNTOYCOMA
 		| while
 		| do_while
 		| switch
+		| error
         ;
 
 
@@ -265,4 +264,4 @@ int main (void) {
 	return yyparse ( );
 }
 
-void yyerror (char *s) {fprintf (stderr, "line %d: %s\n", yylineno, s);} 
+void yyerror (char *s) {fprintf (stderr, "Error linea %d: %s\n", yylineno, s);} 

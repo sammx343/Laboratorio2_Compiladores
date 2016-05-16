@@ -1,8 +1,11 @@
 %{
 #include "y.tab.h"
+#include "y.tab.h"
+extern int yylineno;
 %}
 
 
+%option yylineno
 DIGITO   [0-9]
 LETRA    [a-zA-Z]
 REAL     {DIGITO}+(.{DIGITO}+)?(e(\+|-)?{DIGITO}+)?
@@ -60,12 +63,11 @@ REAL     {DIGITO}+(.{DIGITO}+)?(e(\+|-)?{DIGITO}+)?
 "char"                 {return TIPO_CHAR;}
 "print"				   {return print;}
 
-{LETRA}({LETRA}|{DIGITO})* 	{return ID;}
+{LETRA}({LETRA}|{DIGITO})* 		{return ID;}
 
-(-)?[0-9]+                 {return NUMERO;}
-(-)?[0-9]+.[0-9]+		   {return DECIMAL;}
-\"(\\.|[^"])*\"        {return CTE_CADENA;}
+(-)?[0-9]+                 		{return NUMERO;}
+(-)?[0-9]+.[0-9]+		   		{return DECIMAL;}
+\"(\\.|[^"])*\"        		    {return CTE_CADENA;}
 [ \t\n]                ;
-
 %%
 int yywrap (void) {return 1;}

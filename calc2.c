@@ -9,9 +9,9 @@ void main ()
 		case 2:
 			if(x>media/2){
 				media=media*2;
-			
+			}
 		break
 		default
-			media2=0;
+			media2 = 0;
 	}
 }
