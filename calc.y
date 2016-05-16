@@ -1,16 +1,23 @@
 %{
 void yyerror (char *s);
+
 #include <stdio.h>     /* C declarations used in actions */
 #include <stdlib.h>
+#include "y.tab.h"
+
 int symbols[52];
 int symbolVal(char symbol);
+
+extern int yylineno;
+extern char* yytext;
+
 void updateSymbolVal(char symbol, int val);
 %}
 
 %union {int num; char id;}         /* Yacc definitions */
 %start struct
 %token print
-%token <id> VOID PARENT_A PARENT_C INICIO FIN TIPO_INT TIPO_FLOAT TIPO_CHAR MAIN COMA PUNTOYCOMA DOS_PUNTOS INCLUDE SI SINO SINO_SI PARA MIENTRAS_QUE HAGA_HASTA DEPENDIENDO_DE CASO BREAK DEFAULT MM NUMERO ID CTE_CADENA IGUAL IGUAL_IGUAL MENOR_IGUAL MAYOR_IGUAL MAYOR MENOR DIFERENTE DECIMAL MENOS MAS MULTIPLICACION DIVISION EXP OP_Y OP_O OP_NO PUNTO LEER ESCRIBIR 
+%token <id> VOID PARENT_A PARENT_C INICIO FIN TIPO_INT TIPO_FLOAT TIPO_CHAR MAIN COMA PUNTOYCOMA DOS_PUNTOS INCLUDE SI SINO SINO_SI PARA MIENTRAS_QUE HAGA_HASTA DEPENDIENDO_DE CASO BREAK DEFAULT MM NUMERO ID CTE_CADENA IGUAL IGUAL_IGUAL MENOR_IGUAL MAYOR_IGUAL MAYOR MENOR DIFERENTE DECIMAL MENOS MAS MULTIPLICACION DIVISION EXP OP_Y OP_O OP_NO PUNTO LEER ESCRIBIR
 
 %type <id> assignment declaracion tipo term exp comparison 
 %type <id> line body
@@ -50,6 +57,8 @@ header	: INCLUDE MENOR ID PUNTO ID MAYOR
 
 body	: line
 		| line body 
+		| error body
+		| error line body
 		|
 		;
 
@@ -58,7 +67,7 @@ body	: line
   primitivas, etc.
 */
 
-line    : assignment PUNTOYCOMA
+line    : assignment PUNTOYCOMA 
 		| operacion PUNTOYCOMA
 		| scanf PUNTOYCOMA
 		| printf PUNTOYCOMA
@@ -256,9 +265,4 @@ int main (void) {
 	return yyparse ( );
 }
 
-void yyerror (char *s) {fprintf (stderr, "%s\n", s);} 
-
-/*
-exp    	: term                  {$$ = $1;}
-       	| exp '+' term          {$$ = $1 + $3;}
-       	| exp '-' term          {$$ = $1 - $3;} */
+void yyerror (char *s) {fprintf (stderr, "line %d: %s\n", yylineno, s);} 

@@ -53,7 +53,7 @@ REAL     {DIGITO}+(.{DIGITO}+)?(e(\+|-)?{DIGITO}+)?
 "."					   {return PUNTO;}
 ":"					   {return DOS_PUNTOS;}
 
-"\+\+|--"				{return MM;}
+"\+\+|--"			   {return MM;}
 
 "int"                  {return TIPO_INT;}
 "float"                {return TIPO_FLOAT;}
@@ -66,7 +66,6 @@ REAL     {DIGITO}+(.{DIGITO}+)?(e(\+|-)?{DIGITO}+)?
 (-)?[0-9]+.[0-9]+		   {return DECIMAL;}
 \"(\\.|[^"])*\"        {return CTE_CADENA;}
 [ \t\n]                ;
-.                      {ECHO; yyerror ("unexpected character");}
 
 %%
 int yywrap (void) {return 1;}
